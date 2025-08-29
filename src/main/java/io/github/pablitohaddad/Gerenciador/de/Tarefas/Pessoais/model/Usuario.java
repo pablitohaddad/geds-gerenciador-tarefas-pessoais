@@ -25,11 +25,17 @@ public class Usuario {
     @Column(unique = true)
     private String email;
 
+    private LocalDateTime dataNascimento;
+
+    private String telefone;
+
     private LocalDateTime dataCadastro;
 
-    public Usuario(String nome, String email, LocalDateTime dataCadastro) {
+    public Usuario(String nome, String email, LocalDateTime dataNascimento, String telefone, LocalDateTime dataCadastro) {
         this.nome = nome;
         this.email = email;
+        this.dataNascimento = dataNascimento;
+        this.telefone = telefone;
         this.dataCadastro = LocalDateTime.now();
     }
 }

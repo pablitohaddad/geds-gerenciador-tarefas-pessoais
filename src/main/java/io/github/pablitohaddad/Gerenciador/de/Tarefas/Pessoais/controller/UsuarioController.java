@@ -1,6 +1,7 @@
 package io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.controller;
 
-import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioDTO;
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioCreateDTO;
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioResponseDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.model.Usuario;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,10 +11,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @Tag(name = "Usuario", description = "Endpoints de usuários do sistema")
 @RestController
@@ -33,11 +33,20 @@ public class UsuarioController {
             @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
     })
     @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@RequestBody UsuarioDTO usuarioDTO){
-        Usuario novoUsuario = usuarioService.criarUsuario(usuarioDTO);
-        return new ResponseEntity<>(novoUsuario, HttpStatus.CREATED);
+    public ResponseEntity<UsuarioResponseDTO> criarUsuario(@RequestBody UsuarioCreateDTO usuarioDTO){
+        UsuarioResponseDTO responseDTO = usuarioService.convertParaDTO(usuarioService.criarUsuario(usuarioDTO));
+        return new ResponseEntity<>(responseDTO, HttpStatus.CREATED);
     }
-    // Get By id
+
+    @GetMapping("/{id}") // localhost:8080/usuarios/2
+    public ResponseEntity<UsuarioResponseDTO> getUsuarioById(@PathVariable Long id){
+        Optional<UsuarioResponseDTO> usuarioOptional = usuarioService.buscarPorId(id);
+
+        if (usuarioOptional.isPresent()){
+            return ResponseEntity.ok(usuarioOptional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     // Get All
     // Put
