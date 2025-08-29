@@ -1,0 +1,9 @@
+package io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.repository;
+
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.model.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+}
