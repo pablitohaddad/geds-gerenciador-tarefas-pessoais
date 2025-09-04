@@ -40,12 +40,8 @@ public class UsuarioController {
 
     @GetMapping("/{id}") // localhost:8080/usuarios/2
     public ResponseEntity<UsuarioResponseDTO> getUsuarioById(@PathVariable Long id){
-        Optional<UsuarioResponseDTO> usuarioOptional = usuarioService.buscarPorId(id);
-
-        if (usuarioOptional.isPresent()){
-            return ResponseEntity.ok(usuarioOptional.get());
-        }
-        return ResponseEntity.notFound().build();
+        UsuarioResponseDTO usuarioDTO = usuarioService.buscarPorId(id);
+        return ResponseEntity.ok(usuarioDTO);
     }
 
     // Get All
