@@ -46,4 +46,13 @@ public class UsuarioService {
                 usuario.getTelefone()
         );
     }
+    public boolean deletarUsuario(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        if(usuario.isPresent()){
+            usuarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
