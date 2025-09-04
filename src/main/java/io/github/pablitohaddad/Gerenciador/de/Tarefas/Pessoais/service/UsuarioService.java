@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class UsuarioService {
@@ -45,5 +45,12 @@ public class UsuarioService {
                 usuario.getDataNascimento(),
                 usuario.getTelefone()
         );
+    }
+
+    public List<UsuarioResponseDTO> buscarTodos() {
+        var transaction = usuarioRepository.findAll();
+        var stream = transaction.stream();
+        
+        return stream.map(this::convertParaDTO).toList();
     }
 }
