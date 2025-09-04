@@ -38,4 +38,15 @@ public class UsuarioService {
     public Optional<UsuarioResponseDTO> buscarPorId(Long id) {
         return usuarioRepository.findById(id).map(this::convertParaDTO);
     }
+
+    public boolean deletarUsuario(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        if(usuario.isPresent()){
+            usuarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
+
