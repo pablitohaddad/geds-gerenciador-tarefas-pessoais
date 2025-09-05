@@ -24,7 +24,7 @@ public class UsuarioService {
             throw new EmailDuplicadoException("Email já cadastrado");
         }
         Usuario usuario = new Usuario();
-        usuario.setNome(usuario.getNome());
+        usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setTelefone(usuarioDTO.getTelefone());
         usuario.setDataNascimento(usuarioDTO.getDataNascimento());
@@ -50,7 +50,7 @@ public class UsuarioService {
     public List<UsuarioResponseDTO> buscarTodos() {
         var transaction = usuarioRepository.findAll();
         var stream = transaction.stream();
-        
+
         return stream.map(this::convertParaDTO).toList();
     }
 }

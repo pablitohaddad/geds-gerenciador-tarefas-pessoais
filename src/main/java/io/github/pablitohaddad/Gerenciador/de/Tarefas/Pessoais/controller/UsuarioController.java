@@ -52,7 +52,7 @@ public class UsuarioController {
         List<UsuarioResponseDTO> usuarios = usuarioService.buscarTodos();
         return ResponseEntity.ok(usuarios);
     }
-    
+
     // Put
     // Delete
 
