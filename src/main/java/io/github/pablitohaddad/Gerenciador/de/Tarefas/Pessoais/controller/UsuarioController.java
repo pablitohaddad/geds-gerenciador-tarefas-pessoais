@@ -2,6 +2,7 @@ package io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.controller;
 
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioCreateDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioResponseDTO;
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioUpdateDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.model.Usuario;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,7 +46,30 @@ public class UsuarioController {
     }
 
     // Get All
+    
+    
     // Put
+
+    @Operation(
+            summary = "Atualiza um usuário existente pelo ID",
+            description = "O endpoint recebe o ID do usuário a ser atualizado e os novos dados (nome e email) no corpo da requisição."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operação de atualização realizada com sucesso!"),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos."),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
+    })
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioUpdateDTO
+            usuarioUpdateDTO) {
+
+        UsuarioResponseDTO usuarioAtualizadoDTO = usuarioService.atualizarUsuario(id, usuarioUpdateDTO);
+        return ResponseEntity.ok(usuarioAtualizadoDTO);
+    }
+    
+
     // Delete
     @Operation(
             summary = "Deleta o usuário pelo ID ",
