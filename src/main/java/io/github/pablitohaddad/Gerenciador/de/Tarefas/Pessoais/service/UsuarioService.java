@@ -47,10 +47,20 @@ public class UsuarioService {
         );
     }
 
+
     public List<UsuarioResponseDTO> buscarTodos() {
         var transaction = usuarioRepository.findAll();
         var stream = transaction.stream();
 
         return stream.map(this::convertParaDTO).toList();
+      
+    public boolean deletarUsuario(Long id){
+        Optional<Usuario> usuario = usuarioRepository.findById(id);
+
+        if(usuario.isPresent()){
+            usuarioRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

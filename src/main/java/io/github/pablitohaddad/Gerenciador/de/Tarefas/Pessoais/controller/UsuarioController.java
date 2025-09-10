@@ -55,5 +55,22 @@ public class UsuarioController {
 
     // Put
     // Delete
+    @Operation(
+            summary = "Deleta o usuário pelo ID ",
+            description = "O endpoint deleta o usuário no banco de dados de acordo com o ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Operação deletar realizada com sucesso!"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+            @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
+        boolean deletado = usuarioService.deletarUsuario(id);
+        if (deletado){
+            return ResponseEntity.noContent().build(); // retorna 204
+        }
+        return ResponseEntity.notFound().build();// retorna 404
+    }
 
 }
