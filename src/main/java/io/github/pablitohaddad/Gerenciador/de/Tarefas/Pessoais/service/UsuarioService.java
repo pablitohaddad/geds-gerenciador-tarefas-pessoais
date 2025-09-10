@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class UsuarioService {
             throw new EmailDuplicadoException("Email já cadastrado");
         }
         Usuario usuario = new Usuario();
-        usuario.setNome(usuario.getNome());
+        usuario.setNome(usuarioDTO.getNome());
         usuario.setEmail(usuarioDTO.getEmail());
         usuario.setTelefone(usuarioDTO.getTelefone());
         usuario.setDataNascimento(usuarioDTO.getDataNascimento());
@@ -47,10 +48,18 @@ public class UsuarioService {
                 usuario.getTelefone()
         );
     }
-    public boolean deletarUsuario(Long id){
+
+    public List<UsuarioResponseDTO> buscarTodos() {
+        var transaction = usuarioRepository.findAll();
+        var stream = transaction.stream();
+
+        return stream.map(this::convertParaDTO).toList();
+    }
+
+    public boolean deletarUsuario (Long id){
         Optional<Usuario> usuario = usuarioRepository.findById(id);
 
-        if(usuario.isPresent()){
+        if (usuario.isPresent()) {
             usuarioRepository.deleteById(id);
             return true;
         }

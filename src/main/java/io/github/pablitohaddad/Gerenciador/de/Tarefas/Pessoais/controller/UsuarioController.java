@@ -14,7 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @Tag(name = "Usuario", description = "Endpoints de usuários do sistema")
 @RestController
@@ -45,48 +45,54 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDTO);
     }
 
-    // Get All
-    
-    
+  
+    @Operation(
+          summary = "Retorna todos os usuarios do sistema",
+          description = ""
+      )
+      @GetMapping("/all") // localhost:8080/usuarios/all
+      public ResponseEntity<List<UsuarioResponseDTO>> getAll(){
+          List<UsuarioResponseDTO> usuarios = usuarioService.buscarTodos();
+          return ResponseEntity.ok(usuarios);
+      }
     // Put
 
-    @Operation(
-            summary = "Atualiza um usuário existente pelo ID",
-            description = "O endpoint recebe o ID do usuário a ser atualizado e os novos dados (nome e email) no corpo da requisição."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operação de atualização realizada com sucesso!"),
-            @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos."),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
-            @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
-    })
+      @Operation(
+              summary = "Atualiza um usuário existente pelo ID",
+              description = "O endpoint recebe o ID do usuário a ser atualizado e os novos dados (nome e email) no corpo da requisição."
+      )
+      @ApiResponses(value = {
+              @ApiResponse(responseCode = "200", description = "Operação de atualização realizada com sucesso!"),
+              @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos."),
+              @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+              @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
+      })
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioUpdateDTO
-            usuarioUpdateDTO) {
+      @PutMapping("/{id}")
+      public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioUpdateDTO
+              usuarioUpdateDTO) {
 
-        UsuarioResponseDTO usuarioAtualizadoDTO = usuarioService.atualizarUsuario(id, usuarioUpdateDTO);
-        return ResponseEntity.ok(usuarioAtualizadoDTO);
-    }
-    
+          UsuarioResponseDTO usuarioAtualizadoDTO = usuarioService.atualizarUsuario(id, usuarioUpdateDTO);
+          return ResponseEntity.ok(usuarioAtualizadoDTO);
+      }
 
-    // Delete
-    @Operation(
-            summary = "Deleta o usuário pelo ID ",
-            description = "O endpoint deleta o usuário no banco de dados de acordo com o ID."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Operação deletar realizada com sucesso!"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
-            @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
-        boolean deletado = usuarioService.deletarUsuario(id);
-        if (deletado){
-            return ResponseEntity.noContent().build(); // retorna 204
-        }
-        return ResponseEntity.notFound().build();// retorna 404
-    }
+      // Delete
+      @Operation(
+              summary = "Deleta o usuário pelo ID ",
+              description = "O endpoint deleta o usuário no banco de dados de acordo com o ID."
+      )
+      @ApiResponses(value = {
+              @ApiResponse(responseCode = "204", description = "Operação deletar realizada com sucesso!"),
+              @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+              @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
+      })
+      @DeleteMapping("/{id}")
+      public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
+          boolean deletado = usuarioService.deletarUsuario(id);
+          if (deletado){
+              return ResponseEntity.noContent().build(); // retorna 204
+          }
+          return ResponseEntity.notFound().build();// retorna 404
+      }
 
 }
