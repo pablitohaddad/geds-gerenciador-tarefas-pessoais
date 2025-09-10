@@ -2,6 +2,8 @@ package io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.controller;
 
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioCreateDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioResponseDTO;
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioUpdateDTO;
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.model.Usuario;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,34 +45,54 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDTO);
     }
 
+  
     @Operation(
-        summary = "Retorna todos os usuarios do sistema",
-        description = ""
-    )
-    @GetMapping("/all") // localhost:8080/usuarios/all
-    public ResponseEntity<List<UsuarioResponseDTO>> getAll(){
-        List<UsuarioResponseDTO> usuarios = usuarioService.buscarTodos();
-        return ResponseEntity.ok(usuarios);
-    }
-
+          summary = "Retorna todos os usuarios do sistema",
+          description = ""
+      )
+      @GetMapping("/all") // localhost:8080/usuarios/all
+      public ResponseEntity<List<UsuarioResponseDTO>> getAll(){
+          List<UsuarioResponseDTO> usuarios = usuarioService.buscarTodos();
+          return ResponseEntity.ok(usuarios);
+      }
     // Put
-    // Delete
-    @Operation(
-            summary = "Deleta o usuário pelo ID ",
-            description = "O endpoint deleta o usuário no banco de dados de acordo com o ID."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Operação deletar realizada com sucesso!"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
-            @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
-    })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
-        boolean deletado = usuarioService.deletarUsuario(id);
-        if (deletado){
-            return ResponseEntity.noContent().build(); // retorna 204
-        }
-        return ResponseEntity.notFound().build();// retorna 404
-    }
+
+      @Operation(
+              summary = "Atualiza um usuário existente pelo ID",
+              description = "O endpoint recebe o ID do usuário a ser atualizado e os novos dados (nome e email) no corpo da requisição."
+      )
+      @ApiResponses(value = {
+              @ApiResponse(responseCode = "200", description = "Operação de atualização realizada com sucesso!"),
+              @ApiResponse(responseCode = "400", description = "Dados inválidos fornecidos."),
+              @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+              @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
+      })
+
+      @PutMapping("/{id}")
+      public ResponseEntity<UsuarioResponseDTO> atualizarUsuario(@PathVariable Long id, @RequestBody UsuarioUpdateDTO
+              usuarioUpdateDTO) {
+
+          UsuarioResponseDTO usuarioAtualizadoDTO = usuarioService.atualizarUsuario(id, usuarioUpdateDTO);
+          return ResponseEntity.ok(usuarioAtualizadoDTO);
+      }
+
+      // Delete
+      @Operation(
+              summary = "Deleta o usuário pelo ID ",
+              description = "O endpoint deleta o usuário no banco de dados de acordo com o ID."
+      )
+      @ApiResponses(value = {
+              @ApiResponse(responseCode = "204", description = "Operação deletar realizada com sucesso!"),
+              @ApiResponse(responseCode = "404", description = "Usuário não encontrado."),
+              @ApiResponse(responseCode = "500", description = "Erro interno no servidor.")
+      })
+      @DeleteMapping("/{id}")
+      public ResponseEntity<Void> deleteUsuarioById(@PathVariable Long id){
+          boolean deletado = usuarioService.deletarUsuario(id);
+          if (deletado){
+              return ResponseEntity.noContent().build(); // retorna 204
+          }
+          return ResponseEntity.notFound().build();// retorna 404
+      }
 
 }

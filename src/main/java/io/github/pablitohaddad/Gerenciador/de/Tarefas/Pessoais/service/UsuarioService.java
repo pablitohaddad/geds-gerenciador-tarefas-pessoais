@@ -2,6 +2,7 @@ package io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.service;
 
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioCreateDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioResponseDTO;
+import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioUpdateDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.exception.EmailDuplicadoException;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.exception.UsuarioNaoEncontradoException;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.model.Usuario;
@@ -63,6 +64,18 @@ public class UsuarioService {
             return true;
         }
         return false;
+    }
+
+    public UsuarioResponseDTO atualizarUsuario(Long id, UsuarioUpdateDTO usuarioUpdateDTO) {
+        Usuario usuario = usuarioRepository.findById(id)
+                .orElseThrow(() -> new UsuarioNaoEncontradoException("Usuário com id não existe"));
+
+
+        usuario.setNome(usuarioUpdateDTO.getNome());
+        usuario.setTelefone(usuarioUpdateDTO.getTelefone());
+
+        Usuario salvo = usuarioRepository.save(usuario);
+        return convertParaDTO(salvo);
     }
 }
 
