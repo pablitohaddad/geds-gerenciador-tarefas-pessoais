@@ -2,7 +2,6 @@ package io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.controller;
 
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioCreateDTO;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.dto.UsuarioResponseDTO;
-import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.model.Usuario;
 import io.github.pablitohaddad.Gerenciador.de.Tarefas.Pessoais.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,7 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @Tag(name = "Usuario", description = "Endpoints de usuários do sistema")
 @RestController
@@ -44,7 +43,16 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDTO);
     }
 
-    // Get All
+    @Operation(
+        summary = "Retorna todos os usuarios do sistema",
+        description = ""
+    )
+    @GetMapping("/all") // localhost:8080/usuarios/all
+    public ResponseEntity<List<UsuarioResponseDTO>> getAll(){
+        List<UsuarioResponseDTO> usuarios = usuarioService.buscarTodos();
+        return ResponseEntity.ok(usuarios);
+    }
+
     // Put
     // Delete
     @Operation(
