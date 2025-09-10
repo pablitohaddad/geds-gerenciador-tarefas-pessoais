@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -47,20 +48,21 @@ public class UsuarioService {
         );
     }
 
-
     public List<UsuarioResponseDTO> buscarTodos() {
         var transaction = usuarioRepository.findAll();
         var stream = transaction.stream();
 
         return stream.map(this::convertParaDTO).toList();
-      
-    public boolean deletarUsuario(Long id){
+    }
+
+    public boolean deletarUsuario (Long id){
         Optional<Usuario> usuario = usuarioRepository.findById(id);
 
-        if(usuario.isPresent()){
+        if (usuario.isPresent()) {
             usuarioRepository.deleteById(id);
             return true;
         }
         return false;
     }
 }
+
